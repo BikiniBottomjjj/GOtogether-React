@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoTogether</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f6f5f2;
+  --surface:#fff;
+  --border:#e5e2dd;
+  --text:#111;
+  --muted:#999;
+  --accent:#ff4757;
+  --accent-bg:#fff0f1;
+  --radius:14px;
+}
+body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;min-height:52px;
+}
+.logo-wrap{display:flex;flex-direction:column;gap:2px;padding:10px 0}
+.logo{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.logo em{color:var(--accent);font-style:normal}
+.room-label{font-size:12px;color:var(--muted)}
+
+/* 내 프로필 뱃지 (헤더 오른쪽) */
+.my-profile{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.my-avatar{font-size:22px;line-height:1}
+
+main{max-width:460px;margin:0 auto;padding:1.25rem 1rem 6rem}
+
+/* 홈 */
+.home{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 52px);padding:2rem 1rem}
+.home-inner{width:100%;max-width:340px;display:flex;flex-direction:column;gap:1.25rem}
+.home h1{font-size:28px;font-weight:700;letter-spacing:-.5px;line-height:1.3}
+.home h1 em{color:var(--accent);font-style:normal}
+.home p{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* 프로필 설정 화면 */
+.profile-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 52px);padding:2rem 1rem}
+.profile-inner{width:100%;max-width:340px;display:flex;flex-direction:column;gap:1.5rem}
+.profile-inner h2{font-size:22px;font-weight:700;letter-spacing:-.4px}
+.profile-inner p{font-size:14px;color:var(--muted);margin-top:-.75rem}
+
+/* 캐릭터 선택 */
+.char-grid{display:flex;gap:.75rem}
+.char-btn{
+  flex:1;padding:1rem .5rem;border:1.5px solid var(--border);
+  border-radius:12px;background:var(--bg);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  transition:all .15s;
+}
+.char-btn:hover{border-color:#ccc;background:#fff}
+.char-btn.selected{border-color:var(--accent);background:var(--accent-bg)}
+.char-emoji{font-size:36px;line-height:1}
+.char-name{font-size:11px;font-weight:500;color:var(--muted)}
+.char-btn.selected .char-name{color:var(--accent)}
+
+.field{display:flex;flex-direction:column;gap:.5rem}
+.field label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+input[type=text]{
+  width:100%;height:46px;border:1.5px solid var(--border);border-radius:10px;
+  padding:0 14px;font-size:15px;background:var(--bg);color:var(--text);
+  outline:none;transition:border-color .15s;
+}
+input[type=text]:focus{border-color:var(--accent)}
+input[type=text]::placeholder{color:#ccc}
+
+.btn{
+  height:46px;border:none;border-radius:10px;
+  font-size:15px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:opacity .15s,transform .1s;width:100%;
+}
+.btn:active{transform:scale(.98)}
+.btn-black{background:var(--text);color:#fff}
+.btn-black:hover{opacity:.85}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{background:var(--bg)}
+
+/* 추가 섹션 */
+.add-section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1rem;margin-bottom:1rem;
+  display:flex;flex-direction:column;gap:.75rem;
+}
+
+/* 프로필 미니 표시 */
+.my-info-row{
+  display:flex;align-items:center;gap:8px;
+  padding:.5rem 0;border-bottom:1px solid var(--border);
+  font-size:13px;color:var(--muted);
+}
+.my-info-row strong{color:var(--text);font-weight:600}
+
+/* 사진 업로드 */
+.photo-upload{
+  width:100%;height:120px;border:1.5px dashed var(--border);
+  border-radius:10px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;
+  cursor:pointer;transition:all .15s;background:var(--bg);
+  overflow:hidden;position:relative;
+}
+.photo-upload:hover{border-color:var(--accent);background:#fff8f8}
+.photo-label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;z-index:1;}
+input[type=file]{display:none}
+
+.url-row{display:flex;gap:.5rem}
+.url-row input{flex:1}
+.btn-plus{
+  width:46px;height:46px;flex-shrink:0;border:none;border-radius:10px;
+  background:var(--text);color:#fff;font-size:24px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:opacity .15s;
+}
+.btn-plus:hover{opacity:.8}
+.btn-plus:disabled{opacity:.4;cursor:not-allowed}
+
+/* 카드 */
+.place-list{display:flex;flex-direction:column;gap:.75rem}
+.place-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.place-img{width:100%;height:200px;object-fit:cover;display:block;background:var(--bg)}
+.place-no-img{width:100%;height:120px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:40px}
+.place-body{padding:.875rem 1rem}
+.place-name{font-size:15px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
+
+/* 누가 올렸는지 */
+.place-poster{
+  display:flex;align-items:center;gap:5px;
+  font-size:12px;color:var(--muted);margin-bottom:8px;
+}
+.poster-emoji{font-size:16px;line-height:1}
+
+.place-foot{display:flex;align-items:center;justify-content:space-between}
+.place-link{
+  font-size:13px;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:4px;margin-top:10px;
+}
+.place-link:hover{color:var(--accent)}
+
+.like-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:6px 14px;border-radius:20px;
+  border:1.5px solid var(--border);background:transparent;
+  font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s;
+}
+.like-btn.on{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.del-btn{width:28px;height:28px;border-radius:50%;border:none;background:transparent;cursor:pointer;color:#ccc;font-size:15px;transition:all .15s;}
+.del-btn:hover{background:#fff0f1;color:var(--accent)}
+
+/* 모달 */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:999;padding:1rem;}
+.modal{background:var(--surface);border-radius:16px;padding:1.5rem;width:100%;max-width:300px;display:flex;flex-direction:column;gap:1rem}
+.modal-title{font-size:16px;font-weight:700;text-align:center}
+.modal-desc{font-size:14px;color:var(--muted);text-align:center;line-height:1.5}
+.modal-btns{display:flex;gap:.5rem}
+.modal-btns .btn{flex:1;height:42px;font-size:14px}
+.btn-danger{background:var(--accent);color:#fff;border:none}
+
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;padding:.75rem 1rem;background:var(--surface);border-top:1px solid var(--border);display:flex;gap:.5rem;}
+.bottom-bar .btn{flex:1}
+
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:14px}
+.empty-icon{font-size:40px;margin-bottom:1rem}
+.spinner-wrap{text-align:center;padding:3rem;color:var(--muted);font-size:13px}
+.spinner{width:22px;height:22px;border:2px solid var(--border);border-top-color:var(--text);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap;z-index:999;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo">Go<em>Together</em></div>
+    <div class="room-label" id="roomLabel"></div>
+  </div>
+  <div class="my-profile" id="myProfileBadge" style="display:none"></div>
+</header>
+
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL = 'https://vlgjxnrddegculvfdald.supabase.co'
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsZ2p4bnJkZGVnY3VsdmZkYWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4NTg3ODYsImV4cCI6MjA5NTQzNDc4Nn0.Mta5xNRB47ZqfzjnaXiteeuZrQbkclHP5X7VwpnqADg'
+const db = supabase.createClient(SB_URL, SB_KEY)
+
+const CHARS = [
+  { id: 'sponge', emoji: '🧽', name: '스폰지밥' },
+  { id: 'patrick', emoji: '⭐', name: '뚱이' },
+  { id: 'squid', emoji: '🦑', name: '징징이' },
+]
+
+let roomId = new URLSearchParams(location.search).get('room')
+let roomName = ''
+let places = []
+let myLikes = new Set(JSON.parse(localStorage.getItem('likes_'+roomId)||'[]'))
+let loading = false
+let adding = false
+let selectedFile = null
+
+// 내 프로필 (로컬 저장)
+let myNickname = localStorage.getItem('nickname') || ''
+let myChar = localStorage.getItem('char') || ''
+
+function toast(msg) {
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.classList.add('show')
+  setTimeout(() => el.classList.remove('show'), 2200)
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+
+function getCharEmoji(charId) {
+  return CHARS.find(c => c.id === charId)?.emoji || '👤'
+}
+
+function updateProfileBadge() {
+  const badge = document.getElementById('myProfileBadge')
+  if (myNickname && myChar) {
+    badge.style.display = 'flex'
+    badge.innerHTML = `<span class="my-avatar">${getCharEmoji(myChar)}</span><span>${esc(myNickname)}</span>`
+  } else {
+    badge.style.display = 'none'
+  }
+}
+
+/* ── 홈 (방 만들기) ── */
+function renderHome() {
+  document.getElementById('roomLabel').textContent = ''
+  document.getElementById('app').innerHTML = `
+  <div class="home">
+    <div class="home-inner">
+      <div>
+        <h1>같이 고르자<br><em>장소 투표판</em></h1>
+        <p style="margin-top:.5rem">방 만들고 링크 공유하면<br>친구들이 바로 참여할 수 있어요</p>
+      </div>
+      <div class="field">
+        <label>방 이름</label>
+        <input type="text" id="roomNameInput" placeholder="예: 이번 주 강남 맛집" maxlength="20">
+      </div>
+      <button class="btn btn-black" id="createBtn">방 만들고 링크 복사</button>
+    </div>
+  </div>`
+  document.getElementById('createBtn').onclick = createRoom
+  document.getElementById('roomNameInput').addEventListener('keydown', e => { if(e.key==='Enter') createRoom() })
+}
+
+async function createRoom() {
+  const name = document.getElementById('roomNameInput')?.value.trim()
+  if (!name) { toast('방 이름을 입력해주세요'); return }
+  const { data, error } = await db.from('rooms').insert({ name }).select().single()
+  if (error) { toast('오류가 났어요 😢'); return }
+  const link = location.origin + location.pathname + '?room=' + data.id
+  await navigator.clipboard.writeText(link).catch(()=>{})
+  toast('링크 복사 완료! 카톡에 붙여넣으세요 🎉')
+  setTimeout(() => {
+    roomId = data.id
+    roomName = data.name
+    history.pushState({}, '', '?room=' + data.id)
+    // 방 만든 사람도 프로필 설정
+    if (!myNickname || !myChar) renderProfileScreen()
+    else loadPlaces()
+  }, 1000)
+}
+
+/* ── 프로필 설정 화면 ── */
+function renderProfileScreen() {
+  document.getElementById('app').innerHTML = `
+  <div class="profile-screen">
+    <div class="profile-inner">
+      <div>
+        <h2>프로필 설정</h2>
+        <p>보드에서 사용할 캐릭터와 닉네임을 정해줘요</p>
+      </div>
+
+      <div class="char-grid">
+        ${CHARS.map(c => `
+          <button class="char-btn ${myChar === c.id ? 'selected' : ''}" data-char="${c.id}">
+            <span class="char-emoji">${c.emoji}</span>
+            <span class="char-name">${c.name}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <div class="field">
+        <label>닉네임</label>
+        <input type="text" id="nicknameInput" placeholder="이름이나 별명" maxlength="10" value="${esc(myNickname)}">
+      </div>
+
+      <button class="btn btn-black" id="profileDoneBtn">완료</button>
+    </div>
+  </div>`
+
+  document.querySelectorAll('.char-btn').forEach(btn => {
+    btn.onclick = () => {
+      myChar = btn.dataset.char
+      document.querySelectorAll('.char-btn').forEach(b => b.classList.remove('selected'))
+      btn.classList.add('selected')
+    }
+  })
+
+  document.getElementById('profileDoneBtn').onclick = () => {
+    const nickname = document.getElementById('nicknameInput').value.trim()
+    if (!myChar) { toast('캐릭터를 선택해주세요'); return }
+    if (!nickname) { toast('닉네임을 입력해주세요'); return }
+    myNickname = nickname
+    localStorage.setItem('nickname', myNickname)
+    localStorage.setItem('char', myChar)
+    updateProfileBadge()
+    loadPlaces()
+  }
+}
+
+/* ── 보드 ── */
+async function loadPlaces() {
+  loading = true
+  renderBoard()
+  const { data: room } = await db.from('rooms').select().eq('id', roomId).single()
+  if (room) roomName = room.name
+  document.getElementById('roomLabel').textContent = roomName
+  const { data } = await db.from('places').select().eq('room_id', roomId).order('created_at', { ascending: false })
+  places = data || []
+  loading = false
+  renderBoard()
+}
+
+function renderBoard() {
+  document.getElementById('roomLabel').textContent = roomName
+  updateProfileBadge()
+  const sorted = [...places].sort((a,b) => b.likes - a.likes)
+  document.getElementById('app').innerHTML = `
+  <main>
+    <div class="add-section">
+      <div class="my-info-row">
+        <span style="font-size:20px">${getCharEmoji(myChar)}</span>
+        <span><strong>${esc(myNickname)}</strong>으로 참여 중</span>
+      </div>
+      <label class="photo-upload" id="photoArea">
+        <input type="file" id="photoInput" accept="image/*">
+        <div class="photo-label" id="photoLabel">
+          <span style="font-size:26px">📷</span>
+          <span>사진 추가 (선택)</span>
+          <span style="font-size:11px;color:#bbb">탭해서 이미지 올리기</span>
+        </div>
+      </label>
+      <div class="url-row">
+        <input type="text" id="linkInput" placeholder="네이버 지도 링크 붙여넣기">
+        <button class="btn-plus" id="addBtn" ${adding?'disabled':''}>
+          ${adding?'<div class="spin"></div>':'+'}
+        </button>
+      </div>
+    </div>
+
+    <div class="place-list">
+      ${loading
+        ? `<div class="spinner-wrap"><div class="spinner"></div>불러오는 중...</div>`
+        : sorted.length === 0
+          ? `<div class="empty"><div class="empty-icon">📍</div>아직 장소가 없어요<br>링크를 붙여넣어보세요!</div>`
+          : sorted.map(renderCard).join('')}
+    </div>
+  </main>
+  <div class="bottom-bar">
+    <button class="btn btn-outline" id="shareBtn">🔗 링크 공유</button>
+    <button class="btn btn-outline" id="refreshBtn">↻ 새로고침</button>
+  </div>`
+
+  document.getElementById('photoInput').addEventListener('change', e => {
+    const file = e.target.files[0]
+    if (!file) return
+    selectedFile = file
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const area = document.getElementById('photoArea')
+      const lbl = document.getElementById('photoLabel')
+      const old = area.querySelector('img.preview')
+      if (old) old.remove()
+      const img = document.createElement('img')
+      img.className = 'preview'
+      img.src = ev.target.result
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0'
+      area.appendChild(img)
+      lbl.style.display = 'none'
+    }
+    reader.readAsDataURL(file)
+  })
+
+  document.getElementById('addBtn').onclick = addPlace
+  document.getElementById('linkInput').addEventListener('keydown', e => { if(e.key==='Enter') addPlace() })
+  document.getElementById('shareBtn').onclick = shareLink
+  document.getElementById('refreshBtn').onclick = loadPlaces
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.onclick = () => toggleLike(Number(btn.dataset.id))
+  })
+  document.querySelectorAll('.del-btn').forEach(btn => {
+    btn.onclick = () => showDeleteModal(Number(btn.dataset.id))
+  })
+}
+
+function renderCard(p) {
+  const liked = myLikes.has(p.id)
+  const name = (p.name && p.name !== '네이버 지도 장소') ? p.name : ''
+  const posterEmoji = p.poster_char ? getCharEmoji(p.poster_char) : '👤'
+  const posterName = p.poster_name || ''
+  return `
+  <div class="place-card">
+    ${p.image_url
+      ? `<img class="place-img" src="${esc(p.image_url)}" onerror="this.style.display='none'">`
+      : `<div class="place-no-img">🗺️</div>`}
+    <div class="place-body">
+      ${name ? `<div class="place-name">${esc(name)}</div>` : ''}
+      ${posterName ? `
+        <div class="place-poster">
+          <span class="poster-emoji">${posterEmoji}</span>
+          <span>${esc(posterName)}</span>
+        </div>` : ''}
+      <div class="place-foot">
+        <button class="like-btn ${liked?'on':''}" data-id="${p.id}">
+          ${liked?'♥':'♡'} ${p.likes}
+        </button>
+        <button class="del-btn" data-id="${p.id}">✕</button>
+      </div>
+      ${p.url ? `<a class="place-link" href="${esc(p.url)}" target="_blank">↗ 네이버 지도에서 보기</a>` : ''}
+    </div>
+  </div>`
+}
+
+async function addPlace() {
+  if (adding) return
+  const url = document.getElementById('linkInput')?.value.trim() || ''
+  if (!selectedFile && !url) { toast('사진이나 링크를 추가해주세요'); return }
+
+  adding = true
+  renderBoard()
+  document.getElementById('linkInput').value = url
+
+  let image_url = ''
+  if (selectedFile) {
+    toast('업로드 중...')
+    const ext = selectedFile.name.split('.').pop() || 'jpg'
+    const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+    const { error: upErr } = await db.storage.from('image').upload(fileName, selectedFile, { contentType: selectedFile.type })
+    if (upErr) { toast('사진 업로드 실패 😢'); adding = false; selectedFile = null; renderBoard(); return }
+    const { data: { publicUrl } } = db.storage.from('image').getPublicUrl(fileName)
+    image_url = publicUrl
+  }
+
+  const { error } = await db.from('places').insert({
+    room_id: roomId,
+    url,
+    name: '',
+    address: '',
+    image_url,
+    likes: 0,
+    poster_name: myNickname,
+    poster_char: myChar
+  })
+
+  adding = false
+  selectedFile = null
+
+  if (error) { toast('추가 실패 😢'); console.error(error); renderBoard(); return }
+  toast('추가 완료!')
+  await loadPlaces()
+}
+
+async function toggleLike(id) {
+  const place = places.find(p => p.id === id)
+  if (!place) return
+  const liked = myLikes.has(id)
+  const newLikes = liked ? place.likes - 1 : place.likes + 1
+  liked ? myLikes.delete(id) : myLikes.add(id)
+  localStorage.setItem('likes_'+roomId, JSON.stringify([...myLikes]))
+  place.likes = newLikes
+  renderBoard()
+  await db.from('places').update({ likes: newLikes }).eq('id', id)
+}
+
+function showDeleteModal(id) {
+  const overlay = document.createElement('div')
+  overlay.className = 'modal-overlay'
+  overlay.innerHTML = `
+  <div class="modal">
+    <div class="modal-title">장소 삭제</div>
+    <div class="modal-desc">이 장소를 정말 삭제하시겠어요?</div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" id="cancelDel">아니요</button>
+      <button class="btn btn-danger" id="confirmDel">삭제</button>
+    </div>
+  </div>`
+  document.body.appendChild(overlay)
+  document.getElementById('cancelDel').onclick = () => overlay.remove()
+  overlay.onclick = e => { if(e.target === overlay) overlay.remove() }
+  document.getElementById('confirmDel').onclick = async () => {
+    overlay.remove()
+    const place = places.find(p => p.id === id)
+    if (place?.image_url) {
+      try {
+        const fileName = place.image_url.split('/').pop()
+        await db.storage.from('image').remove([fileName])
+      } catch(e) {}
+    }
+    const { error } = await db.from('places').delete().eq('id', id)
+    if (error) { toast('삭제 실패 😢'); return }
+    toast('삭제됐어요')
+    await loadPlaces()
+  }
+}
+
+function shareLink() {
+  navigator.clipboard.writeText(location.href)
+    .then(() => toast('링크 복사! 카톡에 붙여넣으세요 🎉'))
+}
+
+/* ── 시작 ── */
+if (roomId) {
+  // 링크로 들어온 경우 — 프로필 없으면 설정 먼저
+  if (!myNickname || !myChar) renderProfileScreen()
+  else loadPlaces()
+} else {
+  renderHome()
+}
+</script>
+</body>
+</html>
