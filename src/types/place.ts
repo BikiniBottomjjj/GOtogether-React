@@ -16,6 +16,8 @@ export interface Place {
 export interface AddPlaceInput {
   roomId: string
   url: string
+  name: string
+  address: string
   imageUrl: string
   posterName: string
   posterChar: string

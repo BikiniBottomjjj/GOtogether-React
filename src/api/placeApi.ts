@@ -23,8 +23,8 @@ export async function addPlace(input: AddPlaceInput): Promise<boolean> {
   const { error } = await supabase.from('places').insert({
     room_id: input.roomId,
     url: input.url,
-    name: '',
-    address: '',
+    name: input.name,
+    address: input.address,
     image_url: input.imageUrl,
     likes: 0,
     poster_name: input.posterName,
