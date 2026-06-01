@@ -1,3 +1,4 @@
+```css
 *,
 *::before,
 *::after {
@@ -150,26 +151,26 @@ main {
 
 .char-btn {
   flex: 1;
-  padding: 1rem 0.5rem;
-  border: 1.5px solid var(--border);
+  min-width: 0;
+  padding: 0.5rem;
+  border: none;
   border-radius: 12px;
-  background: var(--bg);
+  background: transparent;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  transition: all 0.15s;
+  transition: transform 0.15s ease;
 }
 
 .char-btn:hover {
-  border-color: #ccc;
-  background: #fff;
+  transform: scale(1.08);
+  background: transparent;
 }
 
 .char-btn.selected {
-  border-color: var(--accent);
-  background: var(--accent-bg);
+  background: transparent;
 }
 
 .char-emoji {
@@ -613,3 +614,38 @@ input[type='file'] {
   position: absolute;
   inset: 0;
 }
+
+.map-shortcuts {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.map-shortcut-btn {
+  flex: 1;
+  height: 38px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.map-shortcut-btn:hover {
+  background: var(--surface);
+  border-color: #ccc;
+}
+
+.char-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+```
