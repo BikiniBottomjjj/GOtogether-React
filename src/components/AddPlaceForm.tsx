@@ -6,7 +6,7 @@
  * 기능 담당
  * */
 import { useRef, useState } from 'react'
-import { getCharEmoji } from '../constants/characters'
+import { getCharImage } from '../constants/characters'
 import { getChar, getNickname } from '../lib/profile'
 import { useToast } from '../hooks/useToast'
 
@@ -25,6 +25,8 @@ export function AddPlaceForm({ adding, onAdd }: AddPlaceFormProps) {
   const [preview, setPreview] = useState<string | null>(null) // 사진 미리보기
   const fileRef = useRef<File | null>(null) // 실제 업로드할 파일 저장
   const inputRef = useRef<HTMLInputElement>(null) // 링크 입력 참조
+  const char = getChar()
+  const avatarSrc = char ? getCharImage(char) : undefined
 
   // 사진 파일 처리 함수
   const handleFile = (file: File | undefined) => {
@@ -51,8 +53,9 @@ export function AddPlaceForm({ adding, onAdd }: AddPlaceFormProps) {
     <div className="add-section">
       {/* 내 정보 표시 */}
       <div className="my-info-row">
-        {/* 캐릭터 이모지 */}
-        <span style={{ fontSize: 20 }}>{getCharEmoji(getChar())}</span>
+        {avatarSrc ? (
+          <img className="my-info-avatar" src={avatarSrc} alt="" />
+        ) : null}
         {/* 닉네임 */}
         <span>
           <strong>{getNickname()}</strong>으로 참여 중

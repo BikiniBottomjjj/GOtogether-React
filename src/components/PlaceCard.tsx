@@ -1,5 +1,5 @@
 /** 장소 카드: 이미지, 이름, 올린 사람, 좋아요, 삭제, 지도 링크 */
-import { getCharEmoji } from '../constants/characters'
+import { getCharImage } from '../constants/characters'
 import type { Place } from '../types/place'
 
 // 부모 컴포넌트(BoardPage 등)에서 전달 받은 장소 정보
@@ -15,10 +15,10 @@ export function PlaceCard({ place, liked, onLike, onDelete }: PlaceCardProps) {
   // 장소 이름
   const name =
     place.name && place.name !== '네이버 지도 장소' ? place.name : ''
-  // 캐릭터 이모지(올린 사람)
-  const posterEmoji = place.poster_char
-    ? getCharEmoji(place.poster_char)
-    : '👤'
+  // 올린 사람 캐릭터 이미지 소스
+    const posterAvatarSrc = place.poster_char
+    ? getCharImage(place.poster_char)
+    : undefined
 
   return (
     <div className="place-card">
@@ -43,7 +43,9 @@ export function PlaceCard({ place, liked, onLike, onDelete }: PlaceCardProps) {
         {/* 올린 사람 정보 */}
         {place.poster_name ? (
           <div className="place-poster">
-            <span className="poster-emoji">{posterEmoji}</span>
+            {posterAvatarSrc ? (
+              <img className="poster-avatar" src={posterAvatarSrc} alt="" />
+            ) : null}
             <span>{place.poster_name}</span>
           </div>
         ) : null}

@@ -16,7 +16,11 @@ export function CharPicker({ selected, onSelect }: CharPickerProps) {
           className={`char-btn${selected === c.id ? ' selected' : ''}`}
           onClick={() => onSelect(c.id)}
         >
-          <span className="char-emoji">{c.emoji}</span>
+          <img
+            src={c.image}
+            alt={c.name}
+            className="char-img"
+          />
           <span className="char-name">{c.name}</span>
         </button>
       ))}
