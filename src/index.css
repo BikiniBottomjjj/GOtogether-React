@@ -684,13 +684,15 @@ input[type='file'] {
   border: 1.5px solid var(--border);
   border-radius: 10px;
   background: var(--bg);
+  font-family: inherit;
   font-size: 13px;
   font-weight: 500;
-  color: var(--text);
+  color: #ADADAD;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  cursor: pointer;
   transition: all 0.15s;
 }
 
