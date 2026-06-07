@@ -28,27 +28,27 @@
 
 ## 핵심 화면 ↔ 코드 매핑
 
-| 화면 (기획) | 설명 | 코드 |
-|-------------|------|------|
-| 보드 생성 | 방 이름 입력 + 고유 링크 생성 | `pages/HomePage.tsx` |
-| 프로필 설정 | 캐릭터·닉네임 (참여자 식별) | `pages/ProfilePage.tsx` |
-| 보드 메인 | 장소 카드 목록 (썸네일, 링크, 좋아요 수) | `pages/BoardPage.tsx` |
-| 장소 추가 | 네이버 링크 + 사진 업로드 | `components/AddPlaceForm.tsx` |
-| 투표 현황 | 좋아요 순 정렬 | `utils/sortPlaces.ts` |
-| 결과 보기 | 1위 하이라이트 | *(2차 — 현재는 좋아요순 목록으로 대체)* |
+| 화면 (기획) | 설명                                     | 코드                                    |
+| ----------- | ---------------------------------------- | --------------------------------------- |
+| 보드 생성   | 방 이름 입력 + 고유 링크 생성            | `pages/HomePage.tsx`                    |
+| 프로필 설정 | 캐릭터·닉네임 (참여자 식별)              | `pages/ProfilePage.tsx`                 |
+| 보드 메인   | 장소 카드 목록 (썸네일, 링크, 좋아요 수) | `pages/BoardPage.tsx`                   |
+| 장소 추가   | 네이버 링크 + 사진 업로드                | `components/AddPlaceForm.tsx`           |
+| 투표 현황   | 좋아요 순 정렬                           | `utils/sortPlaces.ts`                   |
+| 결과 보기   | 1위 하이라이트                           | _(2차 — 현재는 좋아요순 목록으로 대체)_ |
 
 ---
 
 ## 기술 스택
 
-| 영역 | 기술 | 비고 |
-|------|------|------|
-| 프론트 | Vite + React 19 + TypeScript | SPA |
-| 라우팅 | react-router-dom | `?room=` 쿼리 기반 |
-| 스타일 | CSS (커스텀) | 프로토타입 UI 유지 |
-| DB / 백엔드 | Supabase | `rooms`, `places`, Storage |
-| 배포 (예정) | Vercel | `npm run build` → 정적 배포 |
-| 상태 | React hooks + Context | 전역 상태 라이브러리 없음 |
+| 영역        | 기술                         | 비고                        |
+| ----------- | ---------------------------- | --------------------------- |
+| 프론트      | Vite + React 19 + TypeScript | SPA                         |
+| 라우팅      | react-router-dom             | `?room=` 쿼리 기반          |
+| 스타일      | CSS (커스텀)                 | 프로토타입 UI 유지          |
+| DB / 백엔드 | Supabase                     | `rooms`, `places`, Storage  |
+| 배포 (예정) | Vercel                       | `npm run build` → 정적 배포 |
+| 상태        | React hooks + Context        | 전역 상태 라이브러리 없음   |
 
 ---
 
@@ -155,11 +155,11 @@ GOTogether/
 
 ## URL 규칙
 
-| URL | 화면 |
-|-----|------|
-| `/` | 홈 — 방 만들기 |
-| `/?room={uuid}` | 프로필 없으면 프로필 → 있으면 보드 |
-| `/?room={uuid}&setup=profile` | 방 만든 직후 프로필 설정 |
+| URL                           | 화면                               |
+| ----------------------------- | ---------------------------------- |
+| `/`                           | 홈 — 방 만들기                     |
+| `/?room={uuid}`               | 프로필 없으면 프로필 → 있으면 보드 |
+| `/?room={uuid}&setup=profile` | 방 만든 직후 프로필 설정           |
 
 ---
 
@@ -171,11 +171,11 @@ GOTogether/
 
 ### Supabase 테이블
 
-| 테이블 / 버킷 | 용도 |
-|---------------|------|
-| `rooms` | 방 id, name |
-| `places` | 장소 url, image, likes, poster_* |
-| Storage `image` | 장소 사진 |
+| 테이블 / 버킷   | 용도                               |
+| --------------- | ---------------------------------- |
+| `rooms`         | 방 id, name                        |
+| `places`        | 장소 url, image, likes, poster\_\* |
+| Storage `image` | 장소 사진                          |
 
 ---
 
@@ -198,3 +198,7 @@ GOTogether/
 ## 라이선스
 
 Private / 팀 프로젝트
+
+## jira
+
+- Jira integration test
