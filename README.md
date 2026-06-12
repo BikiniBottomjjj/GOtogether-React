@@ -198,3 +198,5 @@ GOTogether/
 ## 라이선스
 
 Private / 팀 프로젝트
+
+test
