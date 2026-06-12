@@ -41,24 +41,24 @@
 
 ## 기술 스택
 
-| 영역        | 기술                         | 비고                        |
-| ----------- | ---------------------------- | --------------------------- |
-| 프론트      | Vite + React 19 + TypeScript | SPA                         |
-| 라우팅      | react-router-dom             | `?room=` 쿼리 기반          |
-| 스타일      | CSS (커스텀)                 | 프로토타입 UI 유지          |
-| DB / 백엔드 | [Supabase](https://supabase.com/dashboard/project/brepbtqutqbkzymsifst) | `rooms`, `places`, Storage |
+| 영역        | 기술                                                                                              | 비고                        |
+| ----------- | ------------------------------------------------------------------------------------------------- | --------------------------- |
+| 프론트      | Vite + React 19 + TypeScript                                                                      | SPA                         |
+| 라우팅      | react-router-dom                                                                                  | `?room=` 쿼리 기반          |
+| 스타일      | CSS (커스텀)                                                                                      | 프로토타입 UI 유지          |
+| DB / 백엔드 | [Supabase](https://supabase.com/dashboard/project/brepbtqutqbkzymsifst)                           | `rooms`, `places`, Storage  |
 | 배포        | [Vercel](https://vercel.com/hyeonjungnohs-projects/gotogether-react/BDgTXtSGQsLn5kCTCua5cdzJRStp) | `npm run build` → 정적 배포 |
-| 상태        | React hooks + Context        | 전역 상태 라이브러리 없음   |
+| 상태        | React hooks + Context                                                                             | 전역 상태 라이브러리 없음   |
 
 ---
 
 ## 배포 · 대시보드
 
-| 항목 | 링크 |
-| ---- | ---- |
-| **서비스 (Production)** | https://gotogether-react.vercel.app/ |
-| **Vercel 배포** | [Deployment Overview](https://vercel.com/hyeonjungnohs-projects/gotogether-react/BDgTXtSGQsLn5kCTCua5cdzJRStp) |
-| **Supabase 프로젝트** | [Dashboard](https://supabase.com/dashboard/project/brepbtqutqbkzymsifst) |
+| 항목                    | 링크                                                                                                           |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **서비스 (Production)** | https://gotogether-react.vercel.app/                                                                           |
+| **Vercel 배포**         | [Deployment Overview](https://vercel.com/hyeonjungnohs-projects/gotogether-react/BDgTXtSGQsLn5kCTCua5cdzJRStp) |
+| **Supabase 프로젝트**   | [Dashboard](https://supabase.com/dashboard/project/brepbtqutqbkzymsifst)                                       |
 
 ---
 
