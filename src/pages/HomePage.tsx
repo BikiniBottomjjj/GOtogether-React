@@ -38,7 +38,7 @@ export function HomePage() {
 
     const board = await createBoard(trimmed)
     if (!board) {
-      showToast('오류가 났어요 😢')
+      showToast('다시 시도 해주세요 😢')
       return null
     }
 
