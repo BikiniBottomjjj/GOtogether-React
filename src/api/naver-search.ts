@@ -6,7 +6,7 @@ export default async function handler(req: any, res: any) {
     `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(query as string)}&display=5`,
     {
       headers: {
-        'X-Naver-Client-Id': process.env.VITE_NAVER_MAP_CLIENT_ID!,
+        'X-Naver-Client-Id': process.env.VITE_NAVER_SEARCH_CLIENT_ID!,
         'X-Naver-Client-Secret': process.env.VITE_NAVER_CLIENT_SECRET!,
       },
     }
