@@ -1,7 +1,7 @@
 // /** 보드 메인 — 장소 목록·추가·좋아요·삭제 */
 /** 보드 메인 — 장소 목록·추가·좋아요·삭제 */
 import { useState } from 'react'
-import { addPlace, deletePlace, updatePlaceLikes, uploadPlaceImage } from '../api/placeApi'
+import { addPlace, deletePlace, updatePlaceLikes } from '../api/placeApi'
 import { BoardBottomBar } from '../components/BoardBottomBar'
 import { DeletePlaceModal } from '../components/DeletePlaceModal'
 import MapSearchSection from '../components/MapSearchSection'
