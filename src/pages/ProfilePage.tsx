@@ -1,6 +1,5 @@
 /** 프로필 설정 — 캐릭터·닉네임 (최초 1회) */
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { CharPicker } from '../components/CharPicker'
 import type { CharacterId } from '../constants/characters'
 import { useToast } from '../hooks/useToast'
@@ -8,14 +7,15 @@ import { getChar, getNickname, saveProfile } from '../lib/profile'
 
 interface ProfilePageProps {
   roomId: string
+  onDone: () => void
 }
 
-export function ProfilePage({ roomId }: ProfilePageProps) {
+export function ProfilePage({ roomId, onDone }: ProfilePageProps) {
   const [char, setChar] = useState<CharacterId | ''>(getChar() || '')
   const [nickname, setNickname] = useState(getNickname())
-  const navigate = useNavigate()
   const { showToast } = useToast()
 
+  //완료 버튼 클릭 후 공유 방 이동//
   const handleDone = () => {
     if (!char) {
       showToast('캐릭터를 선택해주세요')
@@ -27,7 +27,7 @@ export function ProfilePage({ roomId }: ProfilePageProps) {
       return
     }
     saveProfile(trimmed, char)
-    navigate(`/?room=${roomId}`)
+    onDone()//이동
   }
 
   return (

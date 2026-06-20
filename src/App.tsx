@@ -1,7 +1,3 @@
-/**
- * 앱 루트 — URL ?room= 쿼리로 화면 분기
- * 없음: 홈 | room + 프로필 없음: 프로필 | room + 프로필 있음: 보드
- */
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getBoard } from './api/boardApi'
@@ -16,6 +12,8 @@ export default function App() {
   const roomId = params.get('room') ?? ''
   const forceProfile = params.get('setup') === 'profile'
   const [roomName, setRoomName] = useState('')
+  //프로필 설정을 완료했는지 기억하는 스위치, 처음 false 완료 버튼 누르면 true
+  const [profileDone, setProfileDone] = useState(false)  // ✅ 새로 추가
 
   useEffect(() => {
     if (!roomId) {
@@ -27,15 +25,17 @@ export default function App() {
 
   const screen = useMemo(() => {
     if (!roomId) return 'home' as const
-    if (forceProfile || !isProfileComplete()) return 'profile' as const
+    if (forceProfile || (!isProfileComplete() && !profileDone)) return 'profile' as const
     return 'board' as const
-  }, [roomId, forceProfile])
+  }, [roomId, forceProfile, profileDone])  // ✅ profileDone 추가
 
   return (
     <>
       <Header roomLabel={screen !== 'home' ? roomName : ''} />
       {screen === 'home' && <HomePage />}
-      {screen === 'profile' && <ProfilePage roomId={roomId} />}
+      {screen === 'profile' && (
+        <ProfilePage roomId={roomId} onDone={() => setProfileDone(true)} />  // ✅ onDone 추가
+      )}
       {screen === 'board' && <BoardPage roomId={roomId} />}
     </>
   )
