@@ -191,7 +191,8 @@ main {
 }
 
 .home .btn-icon-link {
-  background: #fee500;
+  background: #111
+    /*공유버튼*/
 }
 
 .home .btn-icon:active {
