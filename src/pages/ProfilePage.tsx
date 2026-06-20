@@ -49,7 +49,7 @@ export function ProfilePage({ roomId }: ProfilePageProps) {
             onChange={(e) => setNickname(e.target.value)}
           />
         </div>
-        <button type="button" className="btn btn-black" onClick={handleDone}>
+        <button type="button" className="btn btn-yellow" onClick={handleDone}>
           완료
         </button>
       </div>

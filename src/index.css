@@ -339,12 +339,12 @@ input[type='text']::placeholder {
   transform: scale(0.98);
 }
 
-.btn-black {
+.btn-yellow {
   background: var(--text);
-  color: #fff;
+  color: #fbcf3b;
 }
 
-.btn-black:hover {
+.btn-yellow:hover {
   opacity: 0.85;
 }
 
