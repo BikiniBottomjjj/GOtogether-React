@@ -12,6 +12,7 @@ import { saveMyLikes } from '../lib/likes'
 import { getChar, getNickname } from '../lib/profile'
 import type { Place } from '../types/place'
 import { sortPlacesByLikes } from '../utils/sortPlaces'
+import { fetchPlaceInfo } from '../utils/fetchPlaceInfo'
 
 interface BoardPageProps {
   roomId: string
@@ -35,6 +36,22 @@ export function BoardPage({ roomId }: BoardPageProps) {
   const handleMapPlaceAdd = async (place: { name: string; address: string; mapUrl: string }) => {
     if (adding) return
     setAdding(true)
+
+    let name = place.name
+    let address = place.address
+    let imageUrl = ''
+
+    //url만 있고 이름 주소가 없으면 og 메타 자동 추출
+    if (place.mapUrl && !name) {
+      showToast('링크 분석 중...')
+      const meta = await fetchPlaceInfo(place.mapUrl)
+      if (meta) {
+        name = meta.name
+        address = meta.address
+        imageUrl = meta.imageUrl
+      }
+    }
+
     const ok = await addPlace({
       roomId,
       url: place.mapUrl,
