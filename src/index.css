@@ -616,6 +616,16 @@ input[type='file'] {
   line-height: 1.5;
 }
 
+.modal-title-img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.modal-delete-btn-img {
+  height: 20px;
+  object-fit: contain;
+}
+
 .modal-btns {
   display: flex;
   gap: 0.5rem;
