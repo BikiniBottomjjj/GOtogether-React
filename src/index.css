@@ -653,6 +653,8 @@ input[type='file'] {
   background: var(--surface);
   border-top: 1px solid var(--border);
   display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   gap: 0.5rem;
 }
 

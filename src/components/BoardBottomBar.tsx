@@ -23,7 +23,7 @@ export function BoardBottomBar({ onUrlAdd }: BoardBottomBarProps) {
           placeholder="복사 링크 입력"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter && handleAdd()'}
+          onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
         />
         <button type="button" className="bottom-url-btn" onClick={handleAdd}>
           +
