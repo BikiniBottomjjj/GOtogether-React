@@ -660,6 +660,47 @@ input[type='file'] {
   flex: 1;
 }
 
+/* 하단 url 입력 공간 */
+.bottom-url-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bottom-url-input {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  padding: 0% 16px;
+  font-size: 14px;
+  background: transparent;
+  outline: none;
+}
+
+.bottom-url-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 20%;
+  border: none;
+  background: #000000;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.bottom-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.bottom-actions .btn {
+  flex: 1;
+}
+
 /* 빈 목록 · 로딩 — BoardPage.tsx */
 .empty {
   text-align: center;
