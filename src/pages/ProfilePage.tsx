@@ -10,7 +10,7 @@ interface ProfilePageProps {
   onDone: () => void
 }
 
-export function ProfilePage({ roomId, onDone }: ProfilePageProps) {
+export function ProfilePage({ onDone }: ProfilePageProps) {
   const [char, setChar] = useState<CharacterId | ''>(getChar() || '')
   const [nickname, setNickname] = useState(getNickname())
   const { showToast } = useToast()
