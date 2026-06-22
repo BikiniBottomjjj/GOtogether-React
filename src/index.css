@@ -191,7 +191,8 @@ main {
 }
 
 .home .btn-icon-link {
-  background: #fee500;
+  background: #111
+    /*공유버튼*/
 }
 
 .home .btn-icon:active {
@@ -338,12 +339,12 @@ input[type='text']::placeholder {
   transform: scale(0.98);
 }
 
-.btn-black {
+.btn-yellow {
   background: var(--text);
-  color: #fff;
+  color: #fbcf3b;
 }
 
-.btn-black:hover {
+.btn-yellow:hover {
   opacity: 0.85;
 }
 
@@ -615,6 +616,16 @@ input[type='file'] {
   line-height: 1.5;
 }
 
+.modal-title-img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.modal-delete-btn-img {
+  height: 20px;
+  object-fit: contain;
+}
+
 .modal-btns {
   display: flex;
   gap: 0.5rem;
@@ -642,10 +653,53 @@ input[type='file'] {
   background: var(--surface);
   border-top: 1px solid var(--border);
   display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   gap: 0.5rem;
 }
 
 .bottom-bar .btn {
+  flex: 1;
+}
+
+/* 하단 url 입력 공간 */
+.bottom-url-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bottom-url-input {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  padding: 0% 16px;
+  font-size: 14px;
+  background: transparent;
+  outline: none;
+}
+
+.bottom-url-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 20%;
+  border: none;
+  background: #000000;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.bottom-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.bottom-actions .btn {
   flex: 1;
 }
 
