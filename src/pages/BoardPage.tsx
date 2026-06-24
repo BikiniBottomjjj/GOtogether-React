@@ -105,15 +105,14 @@ export function BoardPage({ roomId }: BoardPageProps) {
 
   return (
     <>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh' }}>
-
-        {/* ① 상단 고정: 네이버 지도 검색 */}
-        <div style={{ flexShrink: 0 }}>
+      <div>
+        {/* ① 네이버 지도 검색 */}
+        <div>
           <MapSearchSection onAdd={handleMapPlaceAdd} />
         </div>
 
-        {/* ② 중간 스크롤: 장소 카드 목록 */}
-        <main style={{ flex: 1, overflowY: 'auto' }}>
+        {/* ② 장소 카드 목록 */}
+        <main>
           <div className="place-list">
             {loading ? (
               <div className="spinner-wrap">
