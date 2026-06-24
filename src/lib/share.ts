@@ -2,7 +2,7 @@ export async function copyLink(url: string) {
   await navigator.clipboard.writeText(url).catch(() => {})
 }
 
-export function shareKakao(url: string, callback?: () => void) {
+export function shareKakao(url: string) {
   if (!window.Kakao?.isInitialized()) return
 
   window.Kakao.Share.sendDefault({
@@ -16,7 +16,6 @@ export function shareKakao(url: string, callback?: () => void) {
         webUrl: url,
       },
     },
-    callback,
   })
 }
 //사파리 링크 공유하기 API제공d

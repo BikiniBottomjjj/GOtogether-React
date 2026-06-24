@@ -64,13 +64,13 @@ export function HomePage() {
     const roomId = new URL(url).searchParams.get('room')
     if (!roomId) return
 
-    shareKakao(url, () => {
-      // 카카오 공유 팝업이 닫힌 후 호출되는 콜백
+    shareKakao(url)
+    window.setTimeout(() => {
       const path = isProfileComplete()
         ? `/?room=${roomId}`
         : `/?room=${roomId}&setup=profile`
       navigate(path)
-    })
+    }, 3000)
 
     // 300ms 후 리스너 등록 — 공유창이 열리기 전 탭 숨김 이벤트를 무시하기 위함
     window.setTimeout(() => {
