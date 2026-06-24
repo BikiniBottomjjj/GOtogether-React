@@ -48,7 +48,7 @@ export default function MapSearchSection({ onAdd }: Props) {
 
         // 새로 script 추가
         const s = document.createElement('script')
-        s.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`
+        s.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`
         s.onload = init
         s.onerror = () => console.error('네이버 지도 스크립트 로드 실패. Client ID 확인 필요:', clientId)
         document.head.appendChild(s)
