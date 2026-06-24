@@ -25,8 +25,9 @@ export default function App() {
 
   const screen = useMemo(() => {
     if (!roomId) return 'home' as const
-    if (forceProfile || (!isProfileComplete() && !profileDone)) return 'profile' as const
+    // 완료 버튼을 눌렀으면 무조건 공유방으로 이동, 안눌렀을 때만 나머지 조건 확인
     return 'board' as const
+    if (!profileDone && (forceProfile || !isProfileComplete())) return 'profile' as const
   }, [roomId, forceProfile, profileDone])  // ✅ profileDone 추가
 
   return (
