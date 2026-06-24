@@ -10,7 +10,8 @@ export function shareKakao(url: string) {
     content: {
       title: '같이 장소 정해보자!',
       description: '뭐먹을까? 뭐할까?',
-      imageUrl: 'https://gotogether-react.vercel.app/og-image.jpg',
+      // imageUrl: 'https://gotogether-react.vercel.app/og-image.jpg',
+      imageUrl: `${window.location.origin}/og-image.jpg`,
       link: {
         mobileWebUrl: url,
         webUrl: url,
