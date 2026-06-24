@@ -24,6 +24,7 @@ export default function MapSearchSection({ onAdd }: Props) {
     // 네이버 지도 초기화
     useEffect(() => {
         const clientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID
+
         const init = () => {
             if (!mapRef.current || !window.naver) return
             mapInstanceRef.current = new window.naver.maps.Map(mapRef.current, {
@@ -31,14 +32,35 @@ export default function MapSearchSection({ onAdd }: Props) {
                 zoom: 14,
             })
         }
-        if (window.naver?.maps) { init() }
-        else {
-            const s = document.createElement('script')
-            s.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`
-            s.onload = init
-            document.head.appendChild(s)
+
+        // 이미 로드된 경우
+        if (window.naver?.maps) {
+            init()
+            return
         }
+
+        // 이미 script 태그가 붙어있으면 중복 추가 방지
+        const existing = document.querySelector('script[src*="openapi.map.naver.com"]')
+        if (existing) {
+            existing.addEventListener('load', init)
+            return
+        }
+
+        // 새로 script 추가
+        const s = document.createElement('script')
+        s.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`
+        s.onload = init
+        s.onerror = () => console.error('네이버 지도 스크립트 로드 실패. Client ID 확인 필요:', clientId)
+        document.head.appendChild(s)
     }, [])
+    //     if (window.naver?.maps) { init() }
+    //     else {
+    //         const s = document.createElement('script')
+    //         s.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`
+    //         s.onload = init
+    //         document.head.appendChild(s)
+    //     }
+    // }, [])
 
     const handleSearch = async () => {
         if (!query.trim()) return
