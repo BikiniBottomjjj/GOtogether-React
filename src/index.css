@@ -340,8 +340,8 @@ input[type='text']::placeholder {
 }
 
 .btn-yellow {
-  background: var(--text);
-  color: #fbcf3b;
+  background: var(--accent);
+  color: #ffff;
 }
 
 .btn-yellow:hover {
