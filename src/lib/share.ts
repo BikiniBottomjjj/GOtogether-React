@@ -18,7 +18,7 @@ export function shareKakao(url: string) {
     },
   })
 }
-//사파리 링크 공유하기 API제공
+//사파리 링크 공유하기 API제공d
 export async function shareNative(url: string): Promise<boolean> {
   if (!navigator.share) return false  // Web Share API 미지원 환경 (PC 등)
   await navigator.share({
