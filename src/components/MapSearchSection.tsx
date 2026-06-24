@@ -75,7 +75,7 @@ export default function MapSearchSection({ onAdd }: Props) {
                 />
                 <button
                     onClick={handleSearch}
-                    style={{ padding: '7px 14px', background: '#ff3b5c', color: 'white', border: 'none', borderRadius: 8, fontSize: 13, cursor: 'pointer' }}
+                    style={{ padding: '7px 14px', background: '#ffff', color: 'white', border: 'none', borderRadius: 8, fontSize: 13, cursor: 'pointer' }}
                 >
                     검색
                 </button>
