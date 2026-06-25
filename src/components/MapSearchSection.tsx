@@ -81,6 +81,9 @@ export default function MapSearchSection({ onAdd }: Props) {
             mapInstanceRef.current.setCenter(
                 new window.naver.maps.LatLng(items[0].lat, items[0].lng)
             )
+
+            // ← 추가: zoom 레벨 설정
+            mapInstanceRef.current.setZoom(17)
         }
     }
 
