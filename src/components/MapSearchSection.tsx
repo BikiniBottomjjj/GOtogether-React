@@ -132,30 +132,81 @@ export default function MapSearchSection({ onAdd }: Props) {
 
             {/* 지도 */}
             <div ref={mapRef} style={{ height: 200, borderRadius: 8, marginBottom: 8, background: '#deecd8' }} />
+            {/* 지도 앱 바로가기 */}
+            <div style={{ display: 'flex', gap: 8, margin: '8px 0' }}>
+                <a
+                    href={query.trim()
+                        ? `https://map.naver.com/v5/search/${encodeURIComponent(query)}`
+                        : 'https://map.naver.com'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                        flex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '10px 0',
+                        background: '#03C75A',
+                        color: 'white',
+                        borderRadius: 8,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                    }}
+                >
+                    네이버 지도 바로가기
+                </a>
+
+                <a
+                    href={query.trim()
+                        ? `https://map.kakao.com/?q=${encodeURIComponent(query)}`
+                        : 'https://map.kakao.com'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                        flex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '10px 0',
+                        background: '#FEE500',
+                        color: '#3C1E1E',
+                        borderRadius: 8,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                    }}
+                >
+                    카카오 지도 바로가기
+                </a>
+            </div >
+
 
             {/* 결과 목록 */}
-            {results.map(place => (
-                <div
-                    key={place.id}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid #f0ebe5' }}
-                >
-
+            {
+                results.map(place => (
                     <div
-                        onClick={() => handleMarker(place)}
-                        style={{ cursor: 'pointer', flex: 1 }}
+                        key={place.id}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid #f0ebe5' }}
                     >
-                        <div style={{ fontSize: 13, fontWeight: 500 }}>{place.name}</div>
-                        <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>{place.address}</div>
+
+                        <div
+                            onClick={() => handleMarker(place)}
+                            style={{ cursor: 'pointer', flex: 1 }}
+                        >
+                            <div style={{ fontSize: 13, fontWeight: 500 }}>{place.name}</div>
+                            <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>{place.address}</div>
+                        </div>
+                        <button
+                            onClick={() => onAdd(place)}
+                            style={{ background: '#ff3b5c', color: 'white', border: 'none', borderRadius: 6, padding: '4px 12px', fontSize: 12, cursor: 'pointer' }}
+                        >
+                            추가
+                        </button>
                     </div>
-                    <button
-                        onClick={() => onAdd(place)}
-                        style={{ background: '#ff3b5c', color: 'white', border: 'none', borderRadius: 6, padding: '4px 12px', fontSize: 12, cursor: 'pointer' }}
-                    >
-                        추가
-                    </button>
-                </div>
-            ))}
-        </div>
+                ))
+            }
+        </div >
     )
 
 }
