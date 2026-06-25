@@ -18,6 +18,7 @@ interface Props {
 export default function MapSearchSection({ onAdd }: Props) {
     const mapRef = useRef<HTMLDivElement>(null)
     const mapInstanceRef = useRef<any>(null)
+    const markersRef = useRef<any[]>([])
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<SearchResult[]>([])
 
@@ -82,6 +83,28 @@ export default function MapSearchSection({ onAdd }: Props) {
         }
     }
 
+    // handleSearch 끝난 바로 다음 줄에 추가
+    const handleMarker = (place: SearchResult) => {
+        if (!mapInstanceRef.current) return
+
+        // 이전 마커 제거
+        markersRef.current.forEach(m => m.setMap(null))
+        markersRef.current = []
+
+        // 새 마커 추가
+        const marker = new window.naver.maps.Marker({
+            position: new window.naver.maps.LatLng(place.lat, place.lng),
+            map: mapInstanceRef.current,
+            title: place.name,
+        })
+        markersRef.current.push(marker)
+
+        // 지도 중심 이동
+        mapInstanceRef.current.setCenter(
+            new window.naver.maps.LatLng(place.lat, place.lng)
+        )
+    }
+
     return (
         <div style={{ padding: '10px 12px' }}>
             <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 8 }}>장소 검색</div>
@@ -111,8 +134,12 @@ export default function MapSearchSection({ onAdd }: Props) {
                 <div
                     key={place.id}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid #f0ebe5' }}
-                >
-                    <div>
+                >\
+
+                    <div
+                        onClick={() => handleMarker(place)}
+                        style={{ cursor: 'pointer', flex: 1 }}
+                    >
                         <div style={{ fontSize: 13, fontWeight: 500 }}>{place.name}</div>
                         <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>{place.address}</div>
                     </div>
