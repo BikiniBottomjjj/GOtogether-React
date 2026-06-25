@@ -1,5 +1,5 @@
 /** 보드 메인 — 장소 목록·추가·좋아요·삭제 */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { addPlace, deletePlace, updatePlaceLikes } from '../api/placeApi'
 import { BoardBottomBar } from '../components/BoardBottomBar'
 import { DeletePlaceModal } from '../components/DeletePlaceModal'
@@ -30,6 +30,36 @@ export function BoardPage({ roomId }: BoardPageProps) {
 
   const [adding, setAdding] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Place | null>(null)
+  const [clipboardUrl, setClipboardUrl] = useState<string>('')
+
+  //클립보드에서 지도 URL 감지
+  const checkClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText()
+      //네이버 지도, 카카오 지도, 구글 지도 URL 패턴 감지
+      const isMapUrl = /map\.naver\.com|place\.map\.kakao\.com|naver\.me|kakao\.com\/v|maps\.google|goo\.gl\/maps/.test(text)
+      if (isMapUrl) {
+        setClipboardUrl(text)
+      }
+    } catch {
+      // 권한 거부 or 클립보드 비어있음 → 무시
+    }
+  }
+
+
+  useEffect(() => {
+    // 마운트 시 1회 감지
+    void checkClipboard()
+
+    // 지도 앱에서 복사 후 돌아올 때 재감지 (탭 포커스 복귀 이벤트)
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        void checkClipboard()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
+  }, [])
 
   // 네이버 지도 검색 결과로 장소 추가
   const handleMapPlaceAdd = async (place: { name: string; address: string; mapUrl: string }) => {
@@ -144,6 +174,8 @@ export function BoardPage({ roomId }: BoardPageProps) {
           // onShare={handleShare}
           // onRefresh={() => void refresh()}
           onUrlAdd={(url) => void handleMapPlaceAdd({ name: '', address: '', mapUrl: url })}
+          clipboardUrl={clipboardUrl}
+          onClipboardUrlAdd={() => setClipboardUrl('')}
         />
 
 

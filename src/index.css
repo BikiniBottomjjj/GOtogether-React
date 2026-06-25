@@ -810,3 +810,56 @@ input[type='file'] {
   background: var(--surface);
   border-color: #ccc;
 }
+
+/* 클립보드 배너 — BoardBottomBar.tsx */
+.clipboard-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff3f3;
+  border: 1px solid #ffbdbd;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  gap: 8px;
+  animation: slideup 0.2s ease;
+}
+
+.clipboard-banner-text {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.clipboard-banner-text {
+  font-size: 13px;
+  color: #e05050;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clipboard-banner-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.clipboard-banner-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.clipboard-banner-btn.apply {
+  background: #e05050;
+  color: white;
+}
+
+.clipboard-banner-btn.dismiss {
+  background: #f0f0f0;
+  color: #666;
+}
