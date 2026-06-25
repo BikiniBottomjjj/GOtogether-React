@@ -462,7 +462,7 @@ input[type='file'] {
   cursor: not-allowed;
 }
 
-/* 장소 카드 — PlaceCard.tsx · BoardPage 목록 */
+/* 장소 카드 — PlaceCard.tsx ·BoardPage 목록 */
 .place-list {
   display: flex;
   flex-direction: column;
