@@ -69,7 +69,8 @@ export default function MapSearchSection({ onAdd }: Props) {
         const data = await res.json()
         const items = data.items.map((item: any) => ({
             id: item.mapx + item.mapy,
-            name: item.title.replace(/<[^>]+>/g, ''),
+            // name: item.title.replace(/<[^>]+>/g, ''),
+            name: item.title.replace(/<[^>]+>/g, '').replace(/\\/g, '').trim(),
             address: item.address,
             lat: Number(item.mapy) / 1e7,
             lng: Number(item.mapx) / 1e7,
@@ -134,7 +135,7 @@ export default function MapSearchSection({ onAdd }: Props) {
                 <div
                     key={place.id}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid #f0ebe5' }}
-                >\
+                >
 
                     <div
                         onClick={() => handleMarker(place)}
