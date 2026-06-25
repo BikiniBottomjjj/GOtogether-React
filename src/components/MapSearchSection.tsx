@@ -127,7 +127,7 @@ export default function MapSearchSection({ onAdd }: Props) {
             </div>
 
             {/* 지도 */}
-            <div ref={mapRef} style={{ height: 170, borderRadius: 8, marginBottom: 8, background: '#deecd8' }} />
+            <div ref={mapRef} style={{ height: 200, borderRadius: 8, marginBottom: 8, background: '#deecd8' }} />
 
             {/* 결과 목록 */}
             {results.map(place => (
